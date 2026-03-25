@@ -1,0 +1,57 @@
+"""FastAPI application for the Property Agency Telegram Bot.
+
+Telegram sends webhook updates to the /webhook endpoint.
+The bot processes commands and replies via the Telegram API.
+"""
+import logging
+from contextlib import asynccontextmanager
+
+from dotenv import load_dotenv
+from fastapi import FastAPI, Request, Response, status
+from telegram import Update
+
+from app.bot import build_application
+
+load_dotenv()
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+_bot_app = None
+
+
+def get_bot_app():
+    """Return the singleton Telegram bot application."""
+    global _bot_app
+    if _bot_app is None:
+        _bot_app = build_application()
+    return _bot_app
+
+
+@asynccontextmanager
+async def lifespan(fastapi_app: FastAPI):
+    """Manage Telegram bot application lifecycle."""
+    bot_app = get_bot_app()
+    await bot_app.initialize()
+    logger.info("Telegram bot application initialized.")
+    yield
+    await bot_app.shutdown()
+    logger.info("Telegram bot application shut down.")
+
+
+app = FastAPI(title="Property Agency Telegram Bot", lifespan=lifespan)
+
+
+@app.get("/health")
+async def health() -> dict:
+    """Health-check endpoint used by Cloud Run."""
+    return {"status": "ok"}
+
+
+@app.post("/webhook")
+async def webhook(request: Request) -> Response:
+    """Receive and process a Telegram webhook update."""
+    data = await request.json()
+    update = Update.de_json(data, get_bot_app().bot)
+    await get_bot_app().process_update(update)
+    return Response(status_code=status.HTTP_200_OK)
