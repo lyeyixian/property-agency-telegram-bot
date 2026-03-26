@@ -58,6 +58,7 @@ async def webhook(request: Request) -> Response:
 
     if not isinstance(data, dict):
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
-    update = Update.de_json(data, get_bot_app().bot)
-    await get_bot_app().process_update(update)
+    bot_app = get_bot_app()
+    update = Update.de_json(data, bot_app.bot)
+    await bot_app.process_update(update)
     return Response(status_code=status.HTTP_200_OK)
