@@ -94,18 +94,22 @@ Telegram will now forward all bot updates to your local server. Open the bot in 
 
 ## Running Tests
 
-Install dependencies (a virtual environment is recommended):
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if you haven't already:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Sync the virtual environment (creates `.venv` automatically):
+
+```bash
+uv sync
 ```
 
 Run the test suite:
 
 ```bash
-pytest
+uv run pytest
 ```
 
 ---
@@ -125,8 +129,8 @@ pytest
 ├── .env.example       # Template for required environment variables
 ├── docker-compose.yml # Local Docker testing
 ├── Dockerfile         # Production image (GCP Cloud Run)
-├── pytest.ini         # Pytest configuration
-└── requirements.txt
+├── pyproject.toml     # Project metadata, dependencies, and tool config
+└── uv.lock            # Locked dependency versions
 ```
 
 ---
