@@ -3,7 +3,7 @@ name = "property-agency-telegram-bot"
 version = "0.1.0"
 description = "A simple Telegram chatbot for property agency workflows"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dependencies = [
     "fastapi==0.135.2",
     "uvicorn[standard]==0.42.0",
