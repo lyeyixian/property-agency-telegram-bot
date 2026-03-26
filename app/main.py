@@ -4,6 +4,8 @@ Telegram sends webhook updates to the /webhook endpoint.
 The bot processes commands and replies via the Telegram API.
 """
 import logging
+import os
+import secrets
 from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
@@ -18,6 +20,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 _bot_app = None
+_webhook_secret_token = os.getenv("WEBHOOK_SECRET_TOKEN")
 
 
 def get_bot_app():
@@ -51,6 +54,13 @@ async def health() -> dict:
 @app.post("/webhook")
 async def webhook(request: Request) -> Response:
     """Receive and process a Telegram webhook update."""
+    if _webhook_secret_token:
+        incoming = request.headers.get("X-Telegram-Bot-Api-Secret-Token")
+        if incoming is None:
+            return Response(status_code=status.HTTP_401_UNAUTHORIZED)
+        if not secrets.compare_digest(incoming, _webhook_secret_token):
+            return Response(status_code=status.HTTP_403_FORBIDDEN)
+
     try:
         data = await request.json()
     except ValueError:

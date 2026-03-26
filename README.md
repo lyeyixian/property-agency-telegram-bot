@@ -49,10 +49,11 @@ cd property-agency-telegram-bot
 cp .env.example .env
 ```
 
-Open `.env` and set your bot token:
+Open `.env` and set your bot token and webhook secret:
 
 ```
 TELEGRAM_BOT_TOKEN=your-telegram-bot-token-here
+WEBHOOK_SECRET_TOKEN=your-webhook-secret-token-here
 ```
 
 ### 3. Build and start the container
@@ -85,7 +86,7 @@ Copy the `https://` forwarding URL (e.g. `https://abc123.ngrok.io`).
 ```bash
 curl -X POST "https://api.telegram.org/bot<YOUR_TOKEN>/setWebhook" \
      -H "Content-Type: application/json" \
-     -d '{"url": "https://abc123.ngrok.io/webhook"}'
+     -d '{"url": "https://abc123.ngrok.io/webhook", "secret_token": "your-webhook-secret-token-here"}'
 ```
 
 Telegram will now forward all bot updates to your local server. Open the bot in Telegram and try `/start`.
@@ -151,7 +152,7 @@ uv run pytest
      --platform managed \
      --region <REGION> \
      --allow-unauthenticated \
-     --set-env-vars TELEGRAM_BOT_TOKEN=<YOUR_TOKEN>
+     --set-env-vars TELEGRAM_BOT_TOKEN=<YOUR_TOKEN>,WEBHOOK_SECRET_TOKEN=<YOUR_WEBHOOK_SECRET_TOKEN>
    ```
 
 3. **Register the webhook** (replace with your Cloud Run URL)
@@ -159,5 +160,5 @@ uv run pytest
    ```bash
    curl -X POST "https://api.telegram.org/bot<YOUR_TOKEN>/setWebhook" \
         -H "Content-Type: application/json" \
-        -d '{"url": "https://<CLOUD_RUN_URL>/webhook"}'
+        -d '{"url": "https://<CLOUD_RUN_URL>/webhook", "secret_token": "<YOUR_WEBHOOK_SECRET_TOKEN>"}'
    ```

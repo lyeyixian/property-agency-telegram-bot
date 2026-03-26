@@ -9,6 +9,9 @@ from fastapi.testclient import TestClient
 # Helpers / fixtures
 # ---------------------------------------------------------------------------
 
+_SECRET = "test-secret-token"
+
+
 def _make_update(command: str) -> dict:
     """Return a minimal Telegram Update payload for a slash command."""
     return {
@@ -25,8 +28,10 @@ def _make_update(command: str) -> dict:
 
 
 @pytest.fixture()
-def client():
-    """Return a TestClient with the bot application mocked out."""
+def client(monkeypatch):
+    """Return a TestClient with the bot application mocked out and a webhook secret set."""
+    monkeypatch.setenv("WEBHOOK_SECRET_TOKEN", _SECRET)
+
     mock_bot = MagicMock()
     mock_bot.initialize = AsyncMock()
     mock_bot.shutdown = AsyncMock()
@@ -63,35 +68,77 @@ class TestWebhookEndpoint:
     def test_webhook_returns_200(self, client):
         c, _ = client
         payload = _make_update("/start")
-        response = c.post("/webhook", json=payload)
+        response = c.post(
+            "/webhook",
+            json=payload,
+            headers={"X-Telegram-Bot-Api-Secret-Token": _SECRET},
+        )
         assert response.status_code == 200
 
     def test_webhook_processes_start_command(self, client):
         c, mock_bot = client
         payload = _make_update("/start")
-        c.post("/webhook", json=payload)
+        c.post(
+            "/webhook",
+            json=payload,
+            headers={"X-Telegram-Bot-Api-Secret-Token": _SECRET},
+        )
         mock_bot.process_update.assert_called_once()
 
     def test_webhook_processes_help_command(self, client):
         c, mock_bot = client
         payload = _make_update("/help")
-        c.post("/webhook", json=payload)
+        c.post(
+            "/webhook",
+            json=payload,
+            headers={"X-Telegram-Bot-Api-Secret-Token": _SECRET},
+        )
         mock_bot.process_update.assert_called_once()
 
     def test_webhook_processes_listings_command(self, client):
         c, mock_bot = client
         payload = _make_update("/listings")
-        c.post("/webhook", json=payload)
+        c.post(
+            "/webhook",
+            json=payload,
+            headers={"X-Telegram-Bot-Api-Secret-Token": _SECRET},
+        )
         mock_bot.process_update.assert_called_once()
 
     def test_webhook_processes_contact_command(self, client):
         c, mock_bot = client
         payload = _make_update("/contact")
-        c.post("/webhook", json=payload)
+        c.post(
+            "/webhook",
+            json=payload,
+            headers={"X-Telegram-Bot-Api-Secret-Token": _SECRET},
+        )
         mock_bot.process_update.assert_called_once()
 
     def test_webhook_processes_about_command(self, client):
         c, mock_bot = client
         payload = _make_update("/about")
-        c.post("/webhook", json=payload)
+        c.post(
+            "/webhook",
+            json=payload,
+            headers={"X-Telegram-Bot-Api-Secret-Token": _SECRET},
+        )
         mock_bot.process_update.assert_called_once()
+
+    def test_webhook_missing_secret_token_returns_401(self, client):
+        c, mock_bot = client
+        payload = _make_update("/start")
+        response = c.post("/webhook", json=payload)
+        assert response.status_code == 401
+        mock_bot.process_update.assert_not_called()
+
+    def test_webhook_invalid_secret_token_returns_403(self, client):
+        c, mock_bot = client
+        payload = _make_update("/start")
+        response = c.post(
+            "/webhook",
+            json=payload,
+            headers={"X-Telegram-Bot-Api-Secret-Token": "wrong-token"},
+        )
+        assert response.status_code == 403
+        mock_bot.process_update.assert_not_called()
