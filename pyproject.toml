@@ -1,0 +1,23 @@
+[project]
+name = "property-agency-telegram-bot"
+version = "0.1.0"
+description = "A simple Telegram chatbot for property agency workflows"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.135.2",
+    "uvicorn[standard]==0.42.0",
+    "python-telegram-bot==22.7",
+    "python-dotenv==1.2.2",
+    "httpx==0.28.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==9.0.2",
+    "pytest-asyncio==1.3.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
