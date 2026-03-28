@@ -35,6 +35,21 @@ Structure the plan using the following template:
 ### Summary
 One or two sentences describing what this issue requires and the approach you recommend.
 
+### User Story
+
+> **As a** [role], **I want to** [capability], **so that** [benefit].
+
+#### Acceptance Criteria
+
+- [ ] AC1: …
+- [ ] AC2: …
+
+> ⚠️ **Multiple user stories detected** *(include this block only when the issue maps to more than one user story)*
+> The issue description covers more than one distinct user story. Ideally each story should live in its own issue. The additional stories identified are listed below — consider creating separate issues for them:
+>
+> - **Story 2**: As a …, I want to …, so that …
+> - **Story N**: As a …, I want to …, so that …
+
 ### Background & Context
 Brief notes on the relevant parts of the codebase that relate to the issue (file paths, classes, functions, configuration keys, etc.).
 
@@ -83,3 +98,4 @@ If the author or another collaborator replies with feedback or asks for clarific
 - Follow the conventions already established in the codebase (FastAPI patterns, `python-telegram-bot` handler style, `uv` for dependency management, `pytest` for testing).
 - Do not implement the changes yourself; only plan them.
 - If the issue is unclear, list your assumptions explicitly in the plan and include clarifying questions in the **Open Questions** section.
+- Aim for exactly **one user story** per plan. If the issue description naturally yields more than one user story, write only the primary story in full and list the additional stories in the **Multiple user stories detected** notice block so the author can create separate issues for them.
