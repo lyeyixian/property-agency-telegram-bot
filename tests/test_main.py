@@ -67,16 +67,14 @@ def client_no_secret(monkeypatch):
 
     import app.main as main_module
 
-    # Reset the singleton and module-level secret token.
-    main_module._bot_app = None
-    main_module._webhook_secret_token = None
+    # Reset the singleton and module-level secret token via monkeypatch so
+    # pytest auto-reverts both values after the test, preventing state leakage.
+    monkeypatch.setattr(main_module, "_bot_app", None)
+    monkeypatch.setattr(main_module, "_webhook_secret_token", None)
 
     with patch("app.main.get_bot_app", return_value=mock_bot):
         with TestClient(main_module.app, raise_server_exceptions=True) as c:
             yield c, mock_bot
-
-    # Restore state after test.
-    main_module._bot_app = None
 
 
 # ---------------------------------------------------------------------------
