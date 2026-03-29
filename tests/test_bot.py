@@ -1,6 +1,8 @@
 """Tests for the bot application setup."""
+
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
 
 from app.bot import build_application
 
