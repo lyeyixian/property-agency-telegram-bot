@@ -67,7 +67,7 @@ For each change required, provide:
 - **Code sketch** *(optional)*: a concise code snippet illustrating the key logic, written in the project's primary language.
 
 ### Testing Plan
-List the test cases that must be added or updated to validate the implementation.  Reference the existing test file(s) and the testing framework in use (`pytest` with `asyncio_mode = "auto"`).
+List the test cases that must be added or updated to validate the implementation. Reference the existing test file(s) and the testing framework in use (`pytest` with `asyncio_mode = "auto"`).
 
 ### Open Questions
 Any ambiguities in the issue that the author should clarify before or during implementation.
