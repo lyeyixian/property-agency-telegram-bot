@@ -7,7 +7,7 @@ This is a **Python Telegram bot** built for a **Malaysian property agency** to a
 The bot receives Telegram updates via a webhook endpoint (`POST /webhook`) and routes commands to the appropriate handlers in `app/handlers.py`.
 
 For detailed architecture and design decisions, see [`docs/architecture.md`](../docs/architecture.md).  
-For application context and development guidelines, see [`docs/agents.md`](../docs/agents.md).
+For application context and development guidelines, see [`AGENTS.md`](../AGENTS.md).
 
 ---
 
@@ -45,37 +45,7 @@ If any step fails, fix the issues before committing. Do **not** commit failing t
 When making changes that affect the application's architecture, features, commands, dependencies, or development conventions, update the relevant context files to keep them accurate:
 
 - [`docs/architecture.md`](../docs/architecture.md) — update when changing architecture, deployment, data flow, or tech stack decisions.
-- [`docs/agents.md`](../docs/agents.md) — update when adding commands, changing project structure, or modifying development workflows.
-
----
-
-## Project Structure
-
-```
-.
-├── app/
-│   ├── __init__.py
-│   ├── main.py        # FastAPI app & /webhook endpoint
-│   ├── bot.py         # Telegram Application setup & command registration
-│   └── handlers.py    # Slash-command handler functions
-├── tests/
-│   ├── __init__.py
-│   ├── test_bot.py       # Tests for bot application setup
-│   ├── test_handlers.py  # Tests for command handlers
-│   └── test_main.py      # Tests for FastAPI endpoints
-├── docs/
-│   ├── agents.md      # AI agent context and development guide
-│   └── architecture.md  # Architecture and design decisions
-├── .github/
-│   ├── agents/        # Custom Copilot agent definitions
-│   ├── workflows/     # GitHub Actions workflows
-│   └── copilot-instructions.md  # This file
-├── .env.example       # Template for required environment variables
-├── docker-compose.yml # Local Docker testing
-├── Dockerfile         # Production image (GCP Cloud Run)
-├── pyproject.toml     # Project metadata, dependencies, and tool config
-└── uv.lock            # Locked dependency versions
-```
+- [`AGENTS.md`](../AGENTS.md) — update when adding commands, changing project structure, or modifying development workflows.
 
 ---
 
