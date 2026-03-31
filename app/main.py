@@ -3,6 +3,7 @@
 Telegram sends webhook updates to the /webhook endpoint.
 The bot processes commands and replies via the Telegram API.
 """
+
 import logging
 import os
 import secrets

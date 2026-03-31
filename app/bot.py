@@ -1,4 +1,5 @@
 """Telegram bot application setup."""
+
 import os
 
 from telegram.ext import Application, CommandHandler
