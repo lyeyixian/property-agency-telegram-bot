@@ -101,38 +101,6 @@ FastAPI shutdown →  lifespan()  →  bot_app.shutdown()
 
 ---
 
-## Directory Structure
-
-```
-.
-├── app/
-│   ├── __init__.py
-│   ├── main.py         # FastAPI app, lifespan, /health, /webhook endpoints
-│   ├── bot.py          # Builds the python-telegram-bot Application; registers handlers
-│   └── handlers.py     # Async handler functions for each slash command
-├── tests/
-│   ├── __init__.py
-│   ├── test_bot.py        # Tests for build_application()
-│   ├── test_handlers.py   # Tests for each command handler function
-│   └── test_main.py       # Tests for FastAPI endpoints (health, webhook, auth)
-├── docs/
-│   ├── agents.md          # AI agent context and development guide
-│   └── architecture.md    # This file
-├── .github/
-│   ├── agents/            # Custom Copilot agent definitions
-│   │   └── issues-planner.agent.md
-│   ├── workflows/
-│   │   └── codeql.yml
-│   └── copilot-instructions.md
-├── .env.example
-├── docker-compose.yml
-├── Dockerfile
-├── pyproject.toml
-└── uv.lock
-```
-
----
-
 ## Deployment
 
 The application is containerised via a multi-stage `Dockerfile`:
